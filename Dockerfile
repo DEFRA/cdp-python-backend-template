@@ -49,4 +49,4 @@ EXPOSE 8085
 ENV PORT=8085
 
 # Run the application.
-CMD ["uvicorn", "app.main:app", "--host=0.0.0.0", "--port=$PORT", "--log-config", "logging.yaml", "--no-access-log"]
+CMD ["uvicorn", "app.main:app", "--host=0.0.0.0", "--port=$PORT", "--log-config", "logging.json", "--no-access-log"]
