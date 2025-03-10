@@ -3,7 +3,7 @@
   "disable_existing_loggers": false,
   "filters": {
       "cdp_filter": {
-          "()": "app.common.logging.ExtraFieldsFilter"
+          "()": "app.common.log_utils.ExtraFieldsFilter"
       }
   },
   "formatters": {
