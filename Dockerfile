@@ -46,7 +46,6 @@ COPY . .
 
 # Expose the port that the application listens on.
 EXPOSE 8085
-ENV PORT=8085
 
 # Run the application.
-CMD ["uvicorn", "app.main:app", "--host=0.0.0.0", "--port=$PORT", "--log-config", "logging.json", "--no-access-log"]
+CMD ["uvicorn", "app.main:app", "--host=0.0.0.0", "--port=8085", "--log-config", "logging.json", "--no-access-log"]
