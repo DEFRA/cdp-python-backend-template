@@ -2,8 +2,8 @@
 
 # Based on Docker's Python guide https://docs.docker.com/language/python/
 
-ARG PYTHON_VERSION=3.12.4
-FROM python:${PYTHON_VERSION}-slim as base
+ARG PYTHON_VERSION=3.13
+FROM python:${PYTHON_VERSION}-slim AS base
 
 # Prevents Python from writing pyc files.
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -11,6 +11,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Keeps Python from buffering stdout and stderr to avoid situations where
 # the application crashes without emitting any logs due to buffering.
 ENV PYTHONUNBUFFERED=1
+ENV UVICORN_PORT=8085
 
 # Add curl to template.
 # CDP PLATFORM HEALTHCHECK REQUIREMENT
@@ -48,4 +49,4 @@ COPY . .
 EXPOSE 8085
 
 # Run the application.
-CMD ["uvicorn", "app.main:app", "--host=0.0.0.0", "--port=8085", "--log-config", "logging.json", "--no-access-log"]
+CMD ["uvicorn", "app.main:app", "--host=0.0.0.0", "--log-config", "logging.json", "--no-access-log"]

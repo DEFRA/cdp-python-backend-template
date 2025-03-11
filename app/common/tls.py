@@ -1,9 +1,7 @@
-import ssl
 import base64
 import os
-import base64
+import ssl
 import tempfile
-
 from logging import getLogger
 
 logger = getLogger(__name__)
@@ -16,14 +14,15 @@ def extract_all_certs():
             try:
                 decoded_value = base64.b64decode(var_value)
             except base64.binascii.Error:
-                logger.error(f"Error decoding value for {var_name}. Skipping.")
+                logger.error("Error decoding value for %s. Skipping.", var_name)
                 continue
             with tempfile.NamedTemporaryFile(
                 mode="wb", delete=False, prefix=var_name, suffix=".pem"
             ) as tmp_file:
                 tmp_file.write(decoded_value)
-                logger.info(f"Written decoded value of {var_name} to {tmp_file.name}")
                 certs[var_name] = tmp_file.name
+                logger.error("Error decoding value for %s. Skipping.", var_name)
+
     return certs
 
 
@@ -32,9 +31,9 @@ def load_certs_into_context(certs):
     for key in certs:
         try:
             ctx.load_verify_locations(certs[key])
-            logger.info(f"Added {key} to truststore")
+            logger.info("Added %s to truststore", key)
         except Exception as err:
-            logger.error(f"Failed to load cert {cert}: {err}")
+            logger.error("Failed to load cert %s: %s", key, err)
     return ctx
 
 

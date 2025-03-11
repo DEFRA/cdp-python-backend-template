@@ -3,11 +3,8 @@ from typing import Optional
 from fastapi import Depends
 from pymongo import AsyncMongoClient
 
-from app.config import config
-from fastapi import Depends
-from pymongo import AsyncMongoClient
 from app.common.tls import cacerts
-
+from app.config import config
 
 client: Optional[AsyncMongoClient] = None
 db = None

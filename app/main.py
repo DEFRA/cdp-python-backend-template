@@ -4,13 +4,12 @@ from logging import getLogger
 from fastapi import FastAPI
 
 from app.common.mongo import get_mongo_client
+from app.common.tls import ctx
 from app.common.tracing import TraceIdMiddleware
 from app.example.router import router as example_router
 from app.health.router import router as health_router
 
 logger = getLogger(__name__)
-
-from app.common.tls import ctx
 
 
 @asynccontextmanager

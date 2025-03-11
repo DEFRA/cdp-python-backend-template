@@ -2,15 +2,15 @@ from logging import getLogger
 
 from fastapi import APIRouter, Depends
 
+from app.common.http_client import async_client
 from app.common.mongo import get_db
-from app.common.http import async_client
 
 router = APIRouter(prefix="/example")
 logger = getLogger(__name__)
 
 
 # remove this example route
-@router.get("/")
+@router.get("/test")
 async def root():
     logger.info("TEST ENDPOINT")
     return {"ok": True}
