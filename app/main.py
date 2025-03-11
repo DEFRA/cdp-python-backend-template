@@ -10,6 +10,8 @@ from app.health.router import router as health_router
 
 logger = getLogger(__name__)
 
+from app.common.tls import ctx
+
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
@@ -22,6 +24,8 @@ async def lifespan(_: FastAPI):
         logger.info("mongo disconnected")
         await client.close()
 
+
+print(ctx.cert_store_stats())
 
 app = FastAPI(lifespan=lifespan)
 

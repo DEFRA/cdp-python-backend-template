@@ -151,6 +151,13 @@ To run the application in development mode:
 docker compose watch
 ```
 
+### Formatting and Linting
+
+The app's code can be auto-formatted using [Black](https://github.com/psf/black). In the project folder simply run `black app/`.
+
+The code can be checked for common issues using [pyflakes](https://pypi.org/project/pyflakes/). In the project folder simply run `pyflakes app/`.
+
+
 ### Testing
 
 Ensure the python virtual environment is configured and libraries are installed using `requirements-dev.txt`, [as above](#python)
