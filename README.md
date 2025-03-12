@@ -1,10 +1,8 @@
 # cdp-python-backend-template
 
-Core Delivery Platform Python Backend Template.
-
 This is work-in-progress. See [To Do List](./TODO.md)
 
-- [cdp-python-template-prototype](#cdp-python-template-prototype)
+- [cdp-python-backend-template](#cdp-python-backend-template)
   - [Requirements](#requirements)
     - [Python](#python)
     - [Docker](#docker)
@@ -151,12 +149,10 @@ To run the application in development mode:
 docker compose watch
 ```
 
-### Formatting and Linting
-
-The app's code can be auto-formatted using [Black](https://github.com/psf/black). In the project folder simply run `black app/`.
-
-The code can be checked for common issues using [pyflakes](https://pypi.org/project/pyflakes/). In the project folder simply run `pyflakes app/`.
-
+Alternatively you can start it using:
+```
+ uvicorn app.main:app --log-config logging-dev.json --reload
+```
 
 ### Testing
 
@@ -183,6 +179,13 @@ Stop the application with
 ```bash
 docker compose down
 ```
+
+Alternatively you can start it using:
+
+```bash
+$ uvicorn app.main:app --host=0.0.0.0 --log-config logging.json --no-access-log
+```
+
 
 ## API endpoints
 

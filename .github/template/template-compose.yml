@@ -4,6 +4,8 @@ services:
     networks:
       - cdp-network
     image: mongo:6.0.13
+    ports:
+      - 27017:27017
     volumes:
       - ./ssl:/etc/ssl:ro
     command: [
@@ -11,8 +13,9 @@ services:
       "--tlsCertificateKeyFile", "etc/ssl/mongodb.pem"
     ]
   service:
-    build:
-      context: ../..
+    #build:
+    #  context: ../..
+    image: cdp-python-backend-template
     container_name: cdp-python-backend-template
     networks:
       - cdp-network

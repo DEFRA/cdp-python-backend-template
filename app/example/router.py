@@ -18,8 +18,8 @@ async def root():
 
 @router.get("/db")
 async def db_query(db=Depends(get_db)):
-    await db.foo.insert_one({"foo": "bar"})
-    data = await db.foo.find_one({}, {"_id": 0})
+    await db.example.insert_one({"foo": "bar"})
+    data = await db.example.find_one({}, {"_id": 0})
     return {"ok": data}
 
 
