@@ -13,8 +13,10 @@ ctx_request = contextvars.ContextVar("request")
 ctx_response = contextvars.ContextVar("response")
 
 
-# Populates context variables making them accessible for the
-# duration of the request.
+# Inbound HTTP requests on the platform will have a `x-cdp-request-id` header.
+# This can be used to follow a single request across multiple services.
+# TraceIdMiddleware handles extracting the tracing header and persisting it
+# for the duration of the request in the ContextVar `ctx_trace_id`.
 class TraceIdMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         req_trace_id = request.headers.get(config.tracing_header, None)
@@ -24,6 +26,5 @@ class TraceIdMiddleware(BaseHTTPMiddleware):
         ctx_request.set({"url": str(request.url), "method": request.method})
 
         response = await call_next(request)
-
         ctx_response.set({"status_code": response.status_code})
         return response
