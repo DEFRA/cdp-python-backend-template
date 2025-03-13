@@ -29,7 +29,7 @@ jobs:
           cache: 'pip'
     
       - run: |
-          pip install -r requirements-dev.json
+          pip install -r requirements-dev.txt
           ruff check
           pytest
 
