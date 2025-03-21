@@ -5,12 +5,13 @@ This is work-in-progress. See [To Do List](./TODO.md)
 - [cdp-python-backend-template](#cdp-python-backend-template)
   - [Requirements](#requirements)
     - [Python](#python)
+    - [Linting and Formatting](#linting-and-formatting)
     - [Docker](#docker)
   - [Local development](#local-development)
-    - [Setup](#setup)
+    - [Setup & Configuration](#setup--configuration)
     - [Development](#development)
     - [Testing](#testing)
-    - [Production](#production)
+    - [Production Mode](#production-mode)
   - [API endpoints](#api-endpoints)
   - [Custom Cloudwatch Metrics](#custom-cloudwatch-metrics)
   - [Pipelines](#pipelines)
@@ -37,6 +38,9 @@ python -m pip install --upgrade pip
 
 # install the dependencies
 pip install -r requirements-dev.txt
+
+# install the pre-commit hooks
+pre-commit install
 ```
 
 This opinionated template uses the [`Fast API`](https://fastapi.tiangolo.com/) Python API framework.
@@ -44,12 +48,6 @@ This opinionated template uses the [`Fast API`](https://fastapi.tiangolo.com/) P
 This and all other runtime python libraries must reside in `requirements.txt`
 
 Other non-runtime dependencies used for dev & test must reside in `requirements-dev.txt`
-
-### Docker
-
-This repository uses Docker throughput its lifecycle i.e. both for local development and the environments. A benefit of this is that environment variables & secrets are managed consistently throughout the lifecycle
-
-See the `Dockerfile` and `compose.yml` for details
 
 ### Linting and Formatting
 
@@ -78,9 +76,6 @@ To set up pre-commit hooks:
 ```bash
 # Set up the git hooks
 pre-commit install
-
-# Alternatively, use the provided setup script
-python scripts/setup_hooks.py
 ```
 
 To run the hooks manually on all files:
@@ -125,15 +120,25 @@ This configuration will:
 
 Ruff is configured in the `.ruff.toml` file
 
+### Docker
+
+This repository uses Docker throughput its lifecycle i.e. both for local development and the environments. A benefit of this is that environment variables & secrets are managed consistently throughout the lifecycle
+
+See the `Dockerfile` and `compose.yml` for details
+
 ## Local development
 
-### Setup
+### Setup & Configuration
 
-Libraries: Ensure the python virtual environment is configured and libraries are installed using `requirements-dev.txt`, [as above](#python)
+Follow the convention below for local environment variables and secrets in local development. Note that it does not use .env or python-dotenv as this is not the convention in the CDP environment.
 
-Environment variables: `compose/aws.env`
+**Environment variables:** `compose/aws.env`.
 
-Secrets: `compose/secrets.env`. You need to create this, as it's excluded from version control.
+**Secrets:** `compose/secrets.env`. You need to create this, as it's excluded from version control.
+
+**Libraries:** Ensure the python virtual environment is configured and libraries are installed using `requirements-dev.txt`, [as above](#python)
+
+**Pre-Commit Hooks:** Ensure you install the pre-commit hooks, as above
 
 ### Development
 
@@ -149,10 +154,7 @@ To run the application in development mode:
 docker compose watch
 ```
 
-Alternatively you can start it using:
-```
- uvicorn app.main:app --log-config logging-dev.json --reload
-```
+The service will then run on `http://localhost:8085`
 
 ### Testing
 
@@ -166,7 +168,7 @@ To test the application run:
 pytest
 ```
 
-### Production
+### Production Mode
 
 To mimic the application running in `production mode locally run:
 
@@ -174,18 +176,13 @@ To mimic the application running in `production mode locally run:
 docker compose up --build -d
 ```
 
+The service will then run on `http://localhost:8085`
+
 Stop the application with
 
 ```bash
 docker compose down
 ```
-
-Alternatively you can start it using:
-
-```bash
-$ uvicorn app.main:app --host=0.0.0.0 --log-config logging.json --no-access-log
-```
-
 
 ## API endpoints
 
