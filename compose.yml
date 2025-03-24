@@ -58,6 +58,22 @@ services:
       watch:
         - action: rebuild
           path: .
+          ignore:
+            - README.md
+            - "**/*.md"
+            - "**/test_*.py"
+            - tests/**/*
+            - .git/**/*
+            - .venv/**/*
+            - .pytest_cache/**/*
+            - .ruff_cache/**/*
+            - .vscode/**/*
+            - .github/**/*
+            - requirements-dev.txt
+            - pytest.ini
+            - .pre-commit-config.yaml
+            - sonar-project.properties
+            - LICENCE
     networks:
       - cdp-tenant
 

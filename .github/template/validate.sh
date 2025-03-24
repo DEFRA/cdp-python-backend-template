@@ -100,4 +100,3 @@ run_tests() {
 # Start Docker
 #setup
 run_tests
-
