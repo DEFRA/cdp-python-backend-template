@@ -142,17 +142,22 @@ Follow the convention below for local environment variables and secrets in local
 
 ### Development
 
-The app can be run locally using Docker compose.  This template contains a local environment with:
-
-- Localstack
-- MongoDB
-- This service
+The app can be run locally using the provided script `scripts/start_dev_server.sh`.
 
 To run the application in development mode:
 
 ```bash
-docker compose watch
+./scripts/start_dev_server.sh
 ```
+
+This script will:
+
+- Check if Docker is running
+- Start dependent services with Docker Compose (Localstack, MongoDB)
+- Set up environment variables for local development
+- Load configuration from compose/aws.env and compose/secrets.env
+- Verify the Python virtual environment is set up
+- Start the FastAPI application with hot-reload enabled
 
 The service will then run on `http://localhost:8085`
 
@@ -168,21 +173,6 @@ To test the application run:
 pytest
 ```
 
-### Production Mode
-
-To mimic the application running in `production mode locally run:
-
-```bash
-docker compose up --build -d
-```
-
-The service will then run on `http://localhost:8085`
-
-Stop the application with
-
-```bash
-docker compose down
-```
 
 ## API endpoints
 
