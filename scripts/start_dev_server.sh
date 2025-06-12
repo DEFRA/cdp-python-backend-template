@@ -13,7 +13,7 @@ fi
 
 # Start dependent services
 echo "Starting dependent services with Docker Compose..."
-docker-compose up -d
+docker compose up -d
 
 # Wait for services to be ready
 echo "Waiting for services to be ready..."
@@ -50,7 +50,8 @@ fi
 
 # Start the application
 echo "Starting FastAPI application..."
-uvicorn app.main:app --host 0.0.0.0 --port $PORT --reload --log-config=logging-dev.json
+# uvicorn app.main:app --host 0.0.0.0 --port $PORT --reload --log-config=logging-dev.json
+uv run -m app.main
 
 # Cleanup function
 cleanup() {

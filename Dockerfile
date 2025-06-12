@@ -1,54 +1,67 @@
-# syntax=docker/dockerfile:1
+# Set default values for build arguments
+ARG PARENT_VERSION=latest-3.12
+ARG PORT=8085
+ARG PORT_DEBUG=8086
 
-# Based on Docker's Python guide https://docs.docker.com/language/python/
+FROM defradigital/python-development:${PARENT_VERSION} AS development
 
-ARG PYTHON_VERSION=3.12
-FROM python:${PYTHON_VERSION}-slim AS base
+ENV PATH="/home/nonroot/.venv/bin:${PATH}"
+ENV LOG_CONFIG="logging-dev.json"
 
-# Prevents Python from writing pyc files.
-ENV PYTHONDONTWRITEBYTECODE=1
+USER root
 
-# Keeps Python from buffering stdout and stderr to avoid situations where
-# the application crashes without emitting any logs due to buffering.
-ENV PYTHONUNBUFFERED=1
+# Install curl via Debian 13 (trixie) backport to patch CVE-2025-0725
+RUN echo "deb https://deb.debian.org/debian bookworm-backports main" > /etc/apt/sources.list.d/bookworm-backports.list \
+    && apt update \
+    && apt install -t bookworm-backports -y --no-install-recommends \
+        curl \
+    && rm -rf /var/lib/apt/lists/*
 
-# Default Port
-ENV UVICORN_PORT=8085
+USER nonroot
 
-# Add curl to template.
-# CDP PLATFORM HEALTHCHECK REQUIREMENT
-RUN apt-get update && apt-get install curl -y
+WORKDIR /home/nonroot
 
-WORKDIR /app
+COPY --chown=nonroot:nonroot pyproject.toml .
+COPY --chown=nonroot:nonroot uv.lock .
 
-# Create a non-privileged user that the app will run under.
-# See https://docs.docker.com/go/dockerfile-user-best-practices/
-ARG UID=10001
-RUN adduser \
-  --disabled-password \
-  --gecos "" \
-  --home "/nonexistent" \
-  --shell "/sbin/nologin" \
-  --no-create-home \
-  --uid "${UID}" \
-  appuser
+RUN uv sync --frozen --no-cache
 
-# Download dependencies as a separate step to take advantage of Docker's caching.
-# Leverage a cache mount to /root/.cache/pip to speed up subsequent builds.
-# Leverage a bind mount to requirements.txt to avoid having to copy them into
-# into this layer.
-RUN --mount=type=cache,target=/root/.cache/pip \
-  --mount=type=bind,source=requirements.txt,target=requirements.txt \
-  python -m pip install -r requirements.txt
+COPY --chown=nonroot:nonroot app/ ./app/
+COPY --chown=nonroot:nonroot logging-dev.json .
 
-# Switch to the non-privileged user to run the application.
-USER appuser
+ARG PORT=8085
+ARG PORT_DEBUG=8086
+ENV PORT=${PORT}
+EXPOSE ${PORT} ${PORT_DEBUG}
 
-# Copy the source code into the container.
-COPY . .
+CMD [ "-m", "app.main" ]
 
-# Expose the port that the application listens on.
-EXPOSE 8085
+FROM defradigital/python:${PARENT_VERSION} AS production
 
-# Run the application.
-CMD ["uvicorn", "app.main:app", "--host=0.0.0.0", "--log-config", "logging.json"]
+ENV PATH="/home/nonroot/.venv/bin:${PATH}"
+ENV LOG_CONFIG="logging.json"
+
+USER root
+
+# CDP requires a shell and curl to run health checks
+COPY --from=development /bin/sh /bin/sh
+
+# Copy curl from the development stage to production
+COPY --from=development /lib/x86_64-linux-gnu/* /lib/x86_64-linux-gnu/
+COPY --from=development /bin/curl /bin/curl
+
+USER nonroot
+
+WORKDIR /home/nonroot
+
+COPY --chown=nonroot:nonroot --from=development /home/nonroot/.venv .venv/
+
+COPY --chown=nonroot:nonroot --from=development /home/nonroot/app/ ./app/
+COPY --chown=nonroot:nonroot logging.json .
+
+ARG PORT
+ENV PORT=${PORT}
+EXPOSE ${PORT}
+
+CMD [ "-m", "app.main" ]
+

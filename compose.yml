@@ -4,6 +4,8 @@ services:
     ports:
       - "4566:4566" # LocalStack Gateway
       - "4510-4559:4510-4559" # external services port range
+    profiles:
+      - dependencies
     env_file:
       - "compose/aws.env"
     environment:
@@ -28,11 +30,60 @@ services:
       - cdp-tenant
     ports:
       - "27017:27017"
+    profiles:
+      - dependencies
     volumes:
       - mongodb-data:/data
     restart: always
 
-  ################################################################################
+  service:
+    build:
+      context: .
+      target: development
+    ports:
+      - 8085:8085
+    links:
+      - "localstack:localstack"
+      - "mongodb:mongodb"
+    depends_on:
+      localstack:
+        condition: service_healthy
+      mongodb:
+        condition: service_started
+    profiles:
+      - service
+    env_file:
+      - .env
+    environment:
+      PORT: 8085
+      LOCALSTACK_ENDPOINT: http://localstack:4566
+      MONGO_URI: mongodb://mongodb:27017/
+    develop:
+      watch:
+        - action: sync
+          path: ./app
+          target: /home/nonroot/app
+          ignore:
+            - README.md
+            - "**/*.md"
+            - "**/test_*.py"
+            - tests/**/*
+            - .git/**/*
+            - .venv/**/*
+            - .pytest_cache/**/*
+            - .ruff_cache/**/*
+            - .vscode/**/*
+            - .github/**/*
+            - requirements-dev.txt
+            - pytest.ini
+            - .pre-commit-config.yaml
+            - sonar-project.properties
+            - LICENCE
+        - action: rebuild
+          path: ./pyproject.toml
+          target: /home/nonroot/pyproject.toml
+    networks:
+      - cdp-tenant
 
 volumes:
   mongodb-data:
@@ -40,3 +91,4 @@ volumes:
 networks:
   cdp-tenant:
     driver: bridge
+
