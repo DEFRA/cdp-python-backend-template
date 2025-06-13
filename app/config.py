@@ -7,7 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class AppConfig(BaseSettings):
     model_config = SettingsConfigDict()
     python_env: str = "development"
-    host: str = "0.0.0.0"
+    host: str = "0.0.0.0"  # noqa: S104
     port: int = 8085
     log_config: str = "logging_dev.json"
     mongo_uri: str = "mongodb://127.0.0.1:27017/"
