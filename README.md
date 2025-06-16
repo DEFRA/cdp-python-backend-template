@@ -139,13 +139,13 @@ This app can be run locally by either using the Docker Compose project or via th
 To run the application using Docker Compose, you can use the following command:
 
 ```bash
-docker compose up --profile service --profile dependencies --build
+docker compose up --profile service --build
 ```
 
 If you want to enable hot-reloading, you can use the `--watch` flag:
 
 ```bash
-docker compose up --profile service --profile dependencies --build --watch
+docker compose up --profile service --build --watch
 ```
 
 #### Using the provided script
