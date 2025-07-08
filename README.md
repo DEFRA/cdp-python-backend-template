@@ -62,10 +62,10 @@ To run Ruff from the command line:
 
 ```bash
 # Run linting with auto-fix
-ruff check . --fix
+uv run  ruff check . --fix
 
 # Run formatting
-ruff format .
+uv run ruff format .
 ```
 
 #### Pre-commit Hooks
@@ -191,7 +191,7 @@ Testing follows the [FastApi documented approach](https://fastapi.tiangolo.com/t
 To test the application run:
 
 ```bash
-pytest
+uv run pytest
 ```
 
 ## API endpoints
