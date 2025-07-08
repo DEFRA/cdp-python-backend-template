@@ -64,4 +64,3 @@ ENV PORT=${PORT}
 EXPOSE ${PORT}
 
 CMD [ "-m", "app.main" ]
-

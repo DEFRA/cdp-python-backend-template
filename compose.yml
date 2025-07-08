@@ -49,11 +49,12 @@ services:
     profiles:
       - service
     env_file:
-      - .env
+      - "compose/aws.env"
+      - "compose/secrets.env"
     environment:
-      PORT: 8085
-      LOCALSTACK_ENDPOINT: http://localstack:4566
-      MONGO_URI: mongodb://mongodb:27017/
+      PORT: ${PORT:-8085}
+      AWS_ENDPOINT_URL: ${AWS_ENDPOINT_URL:-http://localstack:4566}
+      MONGO_URI: ${MONGO_URI:-mongodb://mongodb:27017/}
     develop:
       watch:
         - action: sync
@@ -87,4 +88,3 @@ volumes:
 networks:
   cdp-tenant:
     driver: bridge
-

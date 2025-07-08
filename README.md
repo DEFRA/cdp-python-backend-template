@@ -33,11 +33,24 @@ pipx install uv
 # sync dependencies
 uv sync
 
+# source python venv
+source .venv/bin/activate
+
 # install the pre-commit hooks
 pre-commit install
 ```
 
 This opinionated template uses the [`Fast API`](https://fastapi.tiangolo.com/) Python API framework.
+
+### Environment Variable Configuration
+
+The application uses Pydantic's `BaseSettings` for configuration management in `app/config.py`, automatically mapping environment variables to configuration fields. 
+
+In CDP, environment variables and secrets need to be set using CDP conventions.  See links below:
+- [CDP App Config](https://github.com/DEFRA/cdp-documentation/blob/main/how-to/config.md)
+- [CP Secrets](https://github.com/DEFRA/cdp-documentation/blob/main/how-to/secrets.md) 
+
+For local development - see [instructions below](#local-development). 
 
 ### Linting and Formatting
 
@@ -49,10 +62,10 @@ To run Ruff from the command line:
 
 ```bash
 # Run linting with auto-fix
-uv ruff check . --fix
+ruff check . --fix
 
 # Run formatting
-uv ruff format .
+ruff format .
 ```
 
 #### Pre-commit Hooks
@@ -120,13 +133,15 @@ See the `Dockerfile` and `compose.yml` for details
 
 ### Setup & Configuration
 
-Follow the convention below for local environment variables and secrets in local development. Note that it does not use .env or python-dotenv as this is not the convention in the CDP environment.
+Follow the convention below for environment variables and secrets in local development.
+
+**Note** that it does not use `.env` or `python-dotenv` as this is not the convention in the CDP environment.
 
 **Environment variables:** `compose/aws.env`.
 
 **Secrets:** `compose/secrets.env`. You need to create this, as it's excluded from version control.
 
-**Libraries:** Ensure the python virtual environment is configured and libraries are installed using `requirements-dev.txt`, [as above](#python)
+**Libraries:** Ensure the python virtual environment is configured and libraries are installed using `uv sync`, [as above](#python)
 
 **Pre-Commit Hooks:** Ensure you install the pre-commit hooks, as above
 
@@ -139,13 +154,13 @@ This app can be run locally by either using the Docker Compose project or via th
 To run the application using Docker Compose, you can use the following command:
 
 ```bash
-docker compose up --profile service --build
+docker compose --profile service up --build
 ```
 
 If you want to enable hot-reloading, you can use the `--watch` flag:
 
 ```bash
-docker compose up --profile service --build --watch
+docker compose --profile service up --build --watch
 ```
 
 #### Using the provided script
@@ -176,7 +191,7 @@ Testing follows the [FastApi documented approach](https://fastapi.tiangolo.com/t
 To test the application run:
 
 ```bash
-uv run pytest
+pytest
 ```
 
 ## API endpoints
@@ -184,7 +199,10 @@ uv run pytest
 | Endpoint             | Description                    |
 | :------------------- | :----------------------------- |
 | `GET: /docs`         | Automatic API Swagger docs     |
-| `GET: /example`      | Simple example                 |
+| `GET: /health`       | Health check endpoint          |
+| `GET: /example/test` | Simple example endpoint        |
+| `GET: /example/db`   | Database query example         |
+| `GET: /example/http` | HTTP client example            |
 
 ## Custom Cloudwatch Metrics
 

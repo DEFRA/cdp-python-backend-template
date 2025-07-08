@@ -6,13 +6,13 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class AppConfig(BaseSettings):
     model_config = SettingsConfigDict()
-    python_env: str = "development"
-    host: str = "0.0.0.0"  # noqa: S104
-    port: int = 8085
-    log_config: str = "logging_dev.json"
-    mongo_uri: str = "mongodb://127.0.0.1:27017/"
+    host: Optional[str] = None
+    port: Optional[int] = None
+    log_config: Optional[str] = None
+    mongo_uri: Optional[str] = None
     mongo_database: str = "cdp-python-backend-template"
     mongo_truststore: str = "TRUSTSTORE_CDP_ROOT_CA"
+    aws_endpoint_url: Optional[str] = None
     http_proxy: Optional[HttpUrl] = None
     enable_metrics: bool = False
     tracing_header: str = "x-cdp-request-id"
