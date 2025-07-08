@@ -1,12 +1,10 @@
 from contextlib import asynccontextmanager
 from logging import getLogger
 
-import uvicorn
 from fastapi import FastAPI
 
 from app.common.mongo import get_mongo_client
 from app.common.tracing import TraceIdMiddleware
-from app.config import config
 from app.example.router import router as example_router
 from app.health.router import router as health_router
 

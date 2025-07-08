@@ -1,5 +1,4 @@
 from logging import getLogger
-from typing import Optional
 
 from fastapi import Depends
 from pymongo import AsyncMongoClient
@@ -10,8 +9,8 @@ from app.config import config
 
 logger = getLogger(__name__)
 
-client: Optional[AsyncMongoClient] = None
-db: Optional[AsyncDatabase] = None
+client: AsyncMongoClient | None = None
+db: AsyncDatabase | None = None
 
 
 async def get_mongo_client() -> AsyncMongoClient:

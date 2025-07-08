@@ -3,12 +3,11 @@ import os
 import ssl
 import tempfile
 from logging import getLogger
-from typing import Optional
 
 logger = getLogger(__name__)
 
 custom_ca_certs: dict[str, str] = {}
-ctx: Optional[ssl.SSLContext] = None
+ctx: ssl.SSLContext | None = None
 
 
 # Custom CA Certificates are passed to services on deployment

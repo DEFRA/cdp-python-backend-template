@@ -44,13 +44,13 @@ This opinionated template uses the [`Fast API`](https://fastapi.tiangolo.com/) P
 
 ### Environment Variable Configuration
 
-The application uses Pydantic's `BaseSettings` for configuration management in `app/config.py`, automatically mapping environment variables to configuration fields. 
+The application uses Pydantic's `BaseSettings` for configuration management in `app/config.py`, automatically mapping environment variables to configuration fields.
 
 In CDP, environment variables and secrets need to be set using CDP conventions.  See links below:
 - [CDP App Config](https://github.com/DEFRA/cdp-documentation/blob/main/how-to/config.md)
-- [CP Secrets](https://github.com/DEFRA/cdp-documentation/blob/main/how-to/secrets.md) 
+- [CP Secrets](https://github.com/DEFRA/cdp-documentation/blob/main/how-to/secrets.md)
 
-For local development - see [instructions below](#local-development). 
+For local development - see [instructions below](#local-development).
 
 ### Linting and Formatting
 
