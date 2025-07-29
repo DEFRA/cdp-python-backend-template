@@ -48,7 +48,7 @@ The application uses Pydantic's `BaseSettings` for configuration management in `
 
 In CDP, environment variables and secrets need to be set using CDP conventions.  See links below:
 - [CDP App Config](https://github.com/DEFRA/cdp-documentation/blob/main/how-to/config.md)
-- [CP Secrets](https://github.com/DEFRA/cdp-documentation/blob/main/how-to/secrets.md)
+- [CDP Secrets](https://github.com/DEFRA/cdp-documentation/blob/main/how-to/secrets.md)
 
 For local development - see [instructions below](#local-development).
 
@@ -62,7 +62,7 @@ To run Ruff from the command line:
 
 ```bash
 # Run linting with auto-fix
-uv run  ruff check . --fix
+uv run ruff check . --fix
 
 # Run formatting
 uv run ruff format .
@@ -157,11 +157,7 @@ To run the application using Docker Compose, you can use the following command:
 docker compose --profile service up --build
 ```
 
-If you want to enable hot-reloading, you can use the `--watch` flag:
-
-```bash
-docker compose --profile service up --build --watch
-```
+If you want to enable hot-reloading, you can press the `w` key once the compose project is running to enable `watch` mode.
 
 #### Using the provided script
 
