@@ -28,16 +28,16 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Test code and Create Test Coverage Reports
-      #   uses: actions/setup-python@v5
-      #   with:
-      #     python-version: 3.12
-      #     cache: 'pip'
-
-      # - run: |
-      #     pip install -r requirements-dev.txt
-      #     ruff check
-      #     pytest
+      - name: Test code and Create Test Coverage Reports
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+          cache: 'pip'
+      - run: |
+          pipx install uv
+          uv sync --frozen
+          uv run ruff check
+          uv run pytest
 
 #      - name: SonarCloud Scan
 #        uses: SonarSource/sonarcloud-github-action@master

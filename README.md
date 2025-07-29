@@ -24,20 +24,17 @@ This is work-in-progress. See [To Do List](./TODO.md)
 
 ### Python
 
-Please install python `>= 3.12` and [configure your python virtual environment](https://fastapi.tiangolo.com/virtual-environments/#create-a-virtual-environment):
+Please install python `>= 3.12` and `pipx` in your environment. This template uses [uv](https://github.com/astral-sh/uv) to manage the environment and dependencies.
 
 ```python
-# create the virtual environment
-python -m venv .venv
+# install uv via pipx
+pipx install uv
 
-# activate the the virtual environment in the command line
+# sync dependencies
+uv sync
+
+# source python venv
 source .venv/bin/activate
-
-# update pip
-python -m pip install --upgrade pip
-
-# install the dependencies
-pip install -r requirements-dev.txt
 
 # install the pre-commit hooks
 pre-commit install
@@ -45,9 +42,15 @@ pre-commit install
 
 This opinionated template uses the [`Fast API`](https://fastapi.tiangolo.com/) Python API framework.
 
-This and all other runtime python libraries must reside in `requirements.txt`
+### Environment Variable Configuration
 
-Other non-runtime dependencies used for dev & test must reside in `requirements-dev.txt`
+The application uses Pydantic's `BaseSettings` for configuration management in `app/config.py`, automatically mapping environment variables to configuration fields.
+
+In CDP, environment variables and secrets need to be set using CDP conventions.  See links below:
+- [CDP App Config](https://github.com/DEFRA/cdp-documentation/blob/main/how-to/config.md)
+- [CDP Secrets](https://github.com/DEFRA/cdp-documentation/blob/main/how-to/secrets.md)
+
+For local development - see [instructions below](#local-development).
 
 ### Linting and Formatting
 
@@ -59,10 +62,10 @@ To run Ruff from the command line:
 
 ```bash
 # Run linting with auto-fix
-ruff check . --fix
+uv run ruff check . --fix
 
 # Run formatting
-ruff format .
+uv run ruff format .
 ```
 
 #### Pre-commit Hooks
@@ -130,21 +133,35 @@ See the `Dockerfile` and `compose.yml` for details
 
 ### Setup & Configuration
 
-Follow the convention below for local environment variables and secrets in local development. Note that it does not use .env or python-dotenv as this is not the convention in the CDP environment.
+Follow the convention below for environment variables and secrets in local development.
+
+**Note** that it does not use `.env` or `python-dotenv` as this is not the convention in the CDP environment.
 
 **Environment variables:** `compose/aws.env`.
 
 **Secrets:** `compose/secrets.env`. You need to create this, as it's excluded from version control.
 
-**Libraries:** Ensure the python virtual environment is configured and libraries are installed using `requirements-dev.txt`, [as above](#python)
+**Libraries:** Ensure the python virtual environment is configured and libraries are installed using `uv sync`, [as above](#python)
 
 **Pre-Commit Hooks:** Ensure you install the pre-commit hooks, as above
 
 ### Development
 
-The app can be run locally using the provided script `scripts/start_dev_server.sh`.
+This app can be run locally by either using the Docker Compose project or via the provided script `scripts/start_dev_server.sh`.
 
-To run the application in development mode:
+#### Using Docker Compose
+
+To run the application using Docker Compose, you can use the following command:
+
+```bash
+docker compose --profile service up --build
+```
+
+If you want to enable hot-reloading, you can press the `w` key once the compose project is running to enable `watch` mode.
+
+#### Using the provided script
+
+To run the application using the provided script, you can execute:
 
 ```bash
 ./scripts/start_dev_server.sh
@@ -163,23 +180,25 @@ The service will then run on `http://localhost:8085`
 
 ### Testing
 
-Ensure the python virtual environment is configured and libraries are installed using `requirements-dev.txt`, [as above](#python)
+Ensure the python virtual environment is configured and libraries are installed using `uv sync`, [as above](#python)
 
 Testing follows the [FastApi documented approach](https://fastapi.tiangolo.com/tutorial/testing/); using pytest & starlette.
 
 To test the application run:
 
 ```bash
-pytest
+uv run pytest
 ```
-
 
 ## API endpoints
 
 | Endpoint             | Description                    |
 | :------------------- | :----------------------------- |
 | `GET: /docs`         | Automatic API Swagger docs     |
-| `GET: /example`      | Simple example                 |
+| `GET: /health`       | Health check endpoint          |
+| `GET: /example/test` | Simple example endpoint        |
+| `GET: /example/db`   | Database query example         |
+| `GET: /example/http` | HTTP client example            |
 
 ## Custom Cloudwatch Metrics
 

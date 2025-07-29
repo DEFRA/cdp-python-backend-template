@@ -25,13 +25,15 @@ jobs:
           python-version: 3.12
           cache: 'pip'
       - run: |
-          pip install -r requirements-dev.txt
-          ruff check
-          pytest
+          pipx install uv
+          uv sync --frozen
+          uv run ruff check
+          uv run pytest
+
       - name: Test Docker Image Build
         run: |
           set +e
-          docker build --no-cache --tag cdp-node-backend-template .
+          docker build --no-cache --tag cdp-python-backend-template .
           exit $?
 
 #      - name: SonarCloud Scan
