@@ -10,6 +10,7 @@ ENV LOG_CONFIG="logging-dev.json"
 
 USER root
 
+# curl is required for CDP health checks
 # Install curl via Debian 13 (trixie) backport to patch CVE-2025-0725
 RUN echo "deb https://deb.debian.org/debian bookworm-backports main" > /etc/apt/sources.list.d/bookworm-backports.list \
     && apt update \
