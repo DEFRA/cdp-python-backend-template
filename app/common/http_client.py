@@ -8,13 +8,13 @@ from app.config import config
 logger = getLogger(__name__)
 
 async_proxy_mounts = {
-    "http://": httpx.AsyncHTTPTransport(proxy=config.http_proxy),
-    "https://": httpx.AsyncHTTPTransport(proxy=config.http_proxy)
+    "http://": httpx.AsyncHTTPTransport(proxy=str(config.http_proxy)),
+    "https://": httpx.AsyncHTTPTransport(proxy=str(config.http_proxy))
 } if config.http_proxy else {}
 
 sync_proxy_mounts = {
-    "http://": httpx.HTTPTransport(proxy=config.http_proxy),
-    "https://": httpx.HTTPTransport(proxy=config.http_proxy)
+    "http://": httpx.HTTPTransport(proxy=str(config.http_proxy)),
+    "https://": httpx.HTTPTransport(proxy=str(config.http_proxy))
 } if config.http_proxy else {}
 
 
