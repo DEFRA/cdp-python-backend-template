@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.12"
 
 [[package]]
@@ -196,26 +196,26 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "asgi-logger", specifier = ">=0.1.0" },
-    { name = "aws-embedded-metrics", specifier = ">=3.3.0" },
-    { name = "dnspython", specifier = ">=2.7.0" },
-    { name = "ecs-logging", specifier = ">=2.2.0" },
-    { name = "fastapi", specifier = ">=0.115.12" },
-    { name = "httpx", specifier = ">=0.28.1" },
-    { name = "pydantic-settings", specifier = ">=2.9.1" },
-    { name = "pymongo", extras = ["aws", "encryption", "snappy", "zstd"], specifier = ">=4.13.1" },
-    { name = "uvicorn", specifier = ">=0.34.3" },
+    { name = "asgi-logger", specifier = "==0.1.0" },
+    { name = "aws-embedded-metrics", specifier = "==3.3.0" },
+    { name = "dnspython", specifier = "==2.7.0" },
+    { name = "ecs-logging", specifier = "==2.2.0" },
+    { name = "fastapi", specifier = "==0.115.12" },
+    { name = "httpx", specifier = "==0.28.1" },
+    { name = "pydantic-settings", specifier = "==2.9.1" },
+    { name = "pymongo", extras = ["aws", "encryption", "snappy", "zstd"], specifier = "==4.13.1" },
+    { name = "uvicorn", specifier = "==0.34.3" },
 ]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "httpx", specifier = ">=0.28.1" },
-    { name = "pre-commit", specifier = ">=4.2.0" },
-    { name = "pytest", specifier = ">=8.4.0" },
-    { name = "pytest-asyncio", specifier = ">=1.0.0" },
-    { name = "pytest-cov", specifier = ">=6.2.1" },
-    { name = "ruff", specifier = ">=0.11.13" },
-    { name = "taskipy", specifier = ">=1.14.1" },
+    { name = "httpx", specifier = "==0.28.1" },
+    { name = "pre-commit", specifier = "==4.2.0" },
+    { name = "pytest", specifier = "==8.4.0" },
+    { name = "pytest-asyncio", specifier = "==1.0.0" },
+    { name = "pytest-cov", specifier = "==6.2.1" },
+    { name = "ruff", specifier = "==0.11.13" },
+    { name = "taskipy", specifier = "==1.14.1" },
 ]
 
 [[package]]
@@ -1131,7 +1131,7 @@ dependencies = [
     { name = "colorama" },
     { name = "mslex", marker = "sys_platform == 'win32'" },
     { name = "psutil" },
-    { name = "tomli", marker = "python_full_version < '4.0'" },
+    { name = "tomli", marker = "python_full_version < '4'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/c7/44/572261df3db9c6c3332f8618fafeb07a578fd18b06673c73f000f3586749/taskipy-1.14.1.tar.gz", hash = "sha256:410fbcf89692dfd4b9f39c2b49e1750b0a7b81affd0e2d7ea8c35f9d6a4774ed", size = 14475, upload-time = "2024-11-26T16:37:46.155Z" }
 wheels = [
