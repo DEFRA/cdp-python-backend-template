@@ -5,8 +5,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class AppConfig(BaseSettings):
     model_config = SettingsConfigDict()
     python_env: str | None = None
-    host: str | None = None
-    port: int | None = None
+    host: str = "localhost"
+    port: int = 8086
     log_config: str | None = None
     mongo_uri: str | None = None
     mongo_database: str = "cdp-python-backend-template"

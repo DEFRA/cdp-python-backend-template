@@ -35,15 +35,15 @@ app.include_router(health_router)
 app.include_router(example_router)
 
 
-def main() -> None:
+def main() -> None:  # pragma: no cover
     uvicorn.run(
         "app.main:app",
         host=config.host,
         port=config.port,
         log_config=config.log_config,
-        reload=config.python_env == "development"
+        reload=config.python_env == "development",
     )
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     main()
