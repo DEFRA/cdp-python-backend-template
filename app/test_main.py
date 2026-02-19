@@ -1,8 +1,10 @@
-from fastapi.testclient import TestClient
 import os
 
-from .main import app
+from fastapi.testclient import TestClient
+
 import app.main as main_mod
+
+from .main import app
 
 client = TestClient(app)
 
@@ -44,7 +46,7 @@ def test_main_sets_proxy_envs(mocker, monkeypatch):
     monkeypatch.delenv("HTTPS_PROXY", raising=False)
 
     monkeypatch.setattr(main_mod.config, "http_proxy", "http://proxy:8080")
-    monkeypatch.setattr(main_mod.config, "host", "0.0.0.0")
+    monkeypatch.setattr(main_mod.config, "host", "127.0.0.1")
     monkeypatch.setattr(main_mod.config, "port", 9000)
     monkeypatch.setattr(main_mod.config, "log_config", None)
     monkeypatch.setattr(main_mod.config, "python_env", "production")
@@ -71,4 +73,3 @@ def test_main_no_proxy_in_config(mocker, monkeypatch):
 
     assert os.environ.get("HTTP_PROXY") == "None"
     assert os.environ.get("HTTPS_PROXY") == "None"
-
