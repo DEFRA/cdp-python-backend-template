@@ -1,6 +1,6 @@
 from logging import getLogger
 
-import httpx
+import httpx2
 
 from app.common.tracing import ctx_trace_id
 from app.config import config
@@ -20,7 +20,7 @@ def hook_request_tracing(request):
         request.headers[config.tracing_header] = trace_id
 
 
-def create_async_client(request_timeout: int = 30) -> httpx.AsyncClient:
+def create_async_client(request_timeout: int = 30) -> httpx2.AsyncClient:
     """
     Create an async HTTP client with configurable timeout.
 
@@ -28,17 +28,17 @@ def create_async_client(request_timeout: int = 30) -> httpx.AsyncClient:
         request_timeout: Request timeout in seconds
 
     Returns:
-        Configured httpx.AsyncClient instance
+        Configured httpx2.AsyncClient instance
     """
     client_kwargs = {
         "timeout": request_timeout,
         "event_hooks": {"request": [async_hook_request_tracing]},
     }
 
-    return httpx.AsyncClient(**client_kwargs)
+    return httpx2.AsyncClient(**client_kwargs)
 
 
-def create_client(request_timeout: int = 30) -> httpx.Client:
+def create_client(request_timeout: int = 30) -> httpx2.Client:
     """
     Create a sync HTTP client with configurable timeout.
 
@@ -46,11 +46,11 @@ def create_client(request_timeout: int = 30) -> httpx.Client:
         request_timeout: Request timeout in seconds
 
     Returns:
-        Configured httpx.Client instance
+        Configured httpx2.Client instance
     """
     client_kwargs = {
         "timeout": request_timeout,
         "event_hooks": {"request": [hook_request_tracing]},
     }
 
-    return httpx.Client(**client_kwargs)
+    return httpx2.Client(**client_kwargs)
