@@ -18,14 +18,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0 # Depth 0 is required for branch-based versioning
 
       - name: Test code and Create Test Coverage Reports
         uses: actions/setup-python@v5
         with:
-          python-version: 3.12
           cache: 'pip'
       - run: |
           pipx install uv
